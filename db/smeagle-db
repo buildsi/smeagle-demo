@@ -1,0 +1,260 @@
+#!/usr/bin/env python3
+
+# This script does the following.
+# 1. Take the name of a spack package
+# 2. Build the package and all dependencies, and dependency versions
+# 3. Create some database of facts
+# 4. For each library discovered, emulate a splice and ask "Can this library replace the previous version?
+
+import argparse
+import logging
+import os
+import re
+import json
+import subprocess
+import jsonschema
+import time
+import shutil
+import yaml
+import sys
+import sqlite3
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("smeagle-db")
+
+
+# Schema for smeagle model
+model_schema = {
+    "$schema": "http://json-schema.org/schema#",
+    "title": "build-abi-containers package schema",
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["library", "locations"],
+    "properties": {
+        "library": {"type": "string"},
+        "locations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["function"],
+                "properties": {
+                    "function": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "parameters": {
+                                "type": "array",
+                                 "items": {
+                                     "type": "object",
+                                     "properties": {
+                                         "name": {"type": "string"},
+                                         "type": {"type": "string"},
+                                         "location": {"type": "string"},
+                                         "direction": {"type": "string", "enum": ["import", "export", "unknown"]}
+                                     }     
+                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+# We want the root
+here = os.path.abspath(os.path.dirname(__file__))
+
+def read_json(filename):
+    with open(filename, 'r') as fd:
+        data = json.loads(fd.read())
+    return data
+
+
+smeagle_table_create = """
+CREATE TABLE IF NOT EXISTS abi (
+    id integer PRIMARY KEY AUTOINCREMENT,
+    name text NOT NULL UNIQUE,
+    data json
+);
+"""
+
+smeagle_get_record = """
+SELECT * FROM abi WHERE name = "%s"
+"""
+
+smeagle_get_all = "SELECT * FROM abi"
+
+
+smeagle_create_record = """
+INSERT INTO abi(name, data) VALUES(?,?);
+"""
+
+class Model:
+    def __init__(self, id, name, data):
+        self.id = id
+        self.name = name
+        self.data = json.loads(data)
+    def __str__(self):
+        return self.name 
+    def __repr__(self):
+        return str(self)  
+
+class SmeagleDatabase:
+    def __init__(self, root):
+        """
+        Load in Smeagle output files, write to database, and run solver.
+        """
+        self.root = root
+        self.dbfile = os.path.join(self.root, "smeagle.sqlite")
+        self.connect()
+        self.cursor = self.conn.cursor()
+        # Keep any newly loaded records
+        self.records = []
+
+    def connect(self):
+        """
+        Connect to the sqlite database
+        """
+        try:
+            self.conn = sqlite3.connect(self.dbfile)
+        except Error as e:
+            sys.exit("Cannot connect to database %s" % self.dbfile)
+
+    def create_tables(self):
+        """
+        Create tables if they don't exist.
+        """
+        self.cursor.execute(smeagle_table_create)
+ 
+    def __exit__(self):
+        self.conn.close()
+
+    def load(self, path):
+        """
+        Load results (json) files into Smeagle database
+        """
+        if not os.path.exists(path):
+            sys.exit("%s does not exist." % path)
+
+        # Create tables on load if do not exist
+        self.create_tables()
+           
+        # Load in valid model json
+        for result in os.listdir(path):
+            self.load_data(os.path.join(path, result))
+
+    def list(self):
+        """
+        List all records in the database.
+        """
+        self.cursor.execute(smeagle_get_all)
+        for record in self.cursor.fetchall():
+            self.records.append(Model(record[0], record[1], record[2]))
+        return self.records
+
+    def get(self, name):
+        """
+        Get a database record based on the name (unique)
+        """
+        self.cursor.execute(smeagle_get_record % name)
+        records = []
+        for record in self.cursor.fetchall():
+            logger.info("Creating record for %s" % record[1])
+            records.append(Model(record[0], record[1], record[2]))
+        return records
+
+    def load_data(self, path):
+        """
+        Load a json result into the sqlite database
+        """
+        data = read_json(path)
+        name = os.path.basename(path)
+
+        # We can only include valid models
+        try:
+            jsonschema.validate(data, schema=model_schema)
+            self.create(name, data)
+        except:
+            logger.warning("%s is not valid, skipping!" % path)
+
+    def create(self, name, data):
+        """
+        This does a create, only if it does not exist
+        """
+        records = self.get(name)
+        if not records:
+            self.cursor.execute(smeagle_create_record, (name, json.dumps(data)))
+            self.conn.commit() 
+            records = self.get(name)
+        return records
+
+
+def run_command(cmd, to_stdout=False):
+    stdout = subprocess.PIPE
+    if to_stdout:
+        stdout = None
+    p = subprocess.Popen(cmd, stdout=stdout, stderr=subprocess.STDOUT)
+    out = p.communicate()[0]
+    if out:
+        out = out.decode("utf-8")
+    if p.returncode != 0:
+        print(out)
+        sys.exit("Error running %s." % " ".join(cmd))
+    return out
+
+
+def get_parser():
+    parser = argparse.ArgumentParser(description="Smeagle Runner")
+
+    description = "demo of running Smeagle to save facts and run stability tests"
+    subparsers = parser.add_subparsers(
+        help="run-tests actions",
+        title="actions",
+        description=description,
+        dest="command",
+    )
+
+    # Step 1 is loading into sqlite database
+    load = subparsers.add_parser("load", help="Load smeagle json output into database")
+    load.add_argument("path", help="path of directory of json dumps to load")
+
+    # List what is in the database
+    listing = subparsers.add_parser("list", help="List entries in the database.")
+
+    for command in [load, listing]:
+        command.add_argument(
+            "--root",
+            "-r",
+            dest="root",
+            help="The root where the database will be written and ./results should be found.",
+            default=os.getcwd(),
+        )
+    return parser
+
+
+def main():
+    """
+    Entrypoint for running Smeagle stabilit tests, etc.
+    """
+    parser = get_parser()
+
+    def help(return_code=0):
+        parser.print_help()
+        sys.exit(return_code)
+
+    # If an error occurs while parsing the arguments, the interpreter will exit with value 2
+    args, extra = parser.parse_known_args()
+    if not args.command:
+        help()
+
+    smeagle = SmeagleDatabase(args.root)
+    if args.command == "load":
+        smeagle.load(args.path) 
+    elif args.command == "list":
+        for record in smeagle.list():
+            logger.info(record.name)
+
+if __name__ == "__main__":
+    main()

@@ -87,6 +87,10 @@ Missing Imports
  uncompress2 Pointer64 %rcx
 ```
 
+Or watch the demo!
+
+[![asciicast](https://asciinema.org/a/426799.svg)](https://asciinema.org/a/426799)
+
 Are those assertions correct? Well Smeagle isn't really done yet, so maybe not! :)
 You can see the entire logic in [run.sh](run.sh) which uses [smeagle-db](smeagle-db) (python).
 

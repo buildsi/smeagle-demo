@@ -7,11 +7,12 @@ ENV SPACK_ADD_DEBUG_FLAGS "true"
 ENV SPACK_DEBUG_FLAGS "-g"
 # Smeagle is located in /code
 WORKDIR /db
+COPY requirements.txt /db/requirements.txt
 RUN apt-get install -y gringo && \
     pip3 install --upgrade pip && \
-    pip3 install IPython clingo && \
     pip3 install -r requirements.txt
 COPY run.sh /db/run.sh
+COPY lp /db/lp/
 COPY smeagle-db /db/smeagle-db
 ENTRYPOINT ["/bin/bash"]
 CMD ["/db/run.sh"]

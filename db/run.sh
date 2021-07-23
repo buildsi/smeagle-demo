@@ -32,7 +32,11 @@ for v in $(spack find --paths --no-groups $package); do
 done
 
 # Load results into smeagle database
-smeagle-db load ./results
+./smeagle-db load ./results
 
 # List what we have in the database
-smeagle-db list
+./smeagle-db list
+
+# Run stability test of one library vs. the other
+tests=$(ls ./results)
+./smeagle-db stability-test $tests --detail

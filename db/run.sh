@@ -26,7 +26,7 @@ for v in $(spack find --paths --no-groups $package); do
       # For each package found, run smeagle
       for lib in $(find $v/lib -maxdepth 1 -name '*.so'); do
           basenamelib=$(basename $lib)
-          Smeagle -l $lib -f json > ./results/$specname-$basenamelib.json
+          Smeagle -l $lib > ./results/$specname-$basenamelib.json
       done
   fi
 done

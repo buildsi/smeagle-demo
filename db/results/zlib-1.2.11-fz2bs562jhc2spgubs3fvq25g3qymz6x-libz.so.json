@@ -4,102 +4,103 @@
  [
    {
     "function": {
-      "name": "gzrewind",
+      "name": "adler32",
       "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
+     {"name":"adler", "type":"Integer64", "location":"%rdi", "direction":"import"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "deflateEnd",
+      "name": "gzdopen",
+      "parameters": [
+     {"name":"fd", "type":"Integer32", "location":"%rdi", "direction":"import"},
+     {"name":"mode", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateGetHeader",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"head", "type":"", "location":"%rsi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "deflateBound",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"sourceLen", "type":"Integer64", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "deflateInit_",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"level", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"version", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"stream_size", "type":"Integer32", "location":"%rcx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzsetparams",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"level", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"strategy", "type":"Integer32", "location":"%rdx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateInit2_",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"windowBits", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"version", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"stream_size", "type":"Integer32", "location":"%rcx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateSyncPoint",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
     "function": {
-      "name": "gztell",
+      "name": "gzfread",
+      "parameters": [
+     {"name":"buf", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"size", "type":"Integer64", "location":"%rsi", "direction":"import"},
+     {"name":"nitems", "type":"Integer64", "location":"%rdx", "direction":"import"},
+     {"name":"file", "type":"", "location":"%rcx", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzgetc",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"file", "type":"", "location":"%rsi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzclearerr",
       "parameters": [
      {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
     "function": {
-      "name": "inflateGetDictionary",
+      "name": "gzdirect",
       "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"dictLength", "type":"Pointer64", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateGetDictionary",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"dictLength", "type":"Pointer64", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateCopy",
-      "parameters": [
-     {"name":"dest", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"source", "type":"", "location":"%rsi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzopen",
-      "parameters": [
-    ]
-   }},
-   {
-    "function": {
-      "name": "crc32_combine64",
-      "parameters": [
-     {"name":"crc1", "type":"Integer64", "location":"%rdi", "direction":"import"},
-     {"name":"crc2", "type":"Integer64", "location":"%rsi", "direction":"import"},
-     {"name":"len2", "type":"Integer64", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflatePrime",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"bits", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"value", "type":"Integer32", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "crc32",
-      "parameters": [
-     {"name":"crc", "type":"Integer64", "location":"%rdi", "direction":"import"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "compress2",
-      "parameters": [
-     {"name":"dest", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"source", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"sourceLen", "type":"Integer64", "location":"%rcx", "direction":"import"},
-     {"name":"level", "type":"Integer32", "location":"%r8", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "crc32_z",
-      "parameters": [
-     {"name":"crc", "type":"Integer64", "location":"%rdi", "direction":"import"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"len", "type":"Integer64", "location":"%rdx", "direction":"import"}
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
@@ -108,6 +109,39 @@
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
      {"name":"flush", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzclose",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzread",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateValidate",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"check", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzgets",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
@@ -127,42 +161,25 @@
      {"name":"windowBits", "type":"Integer32", "location":"%rcx", "direction":"import"},
      {"name":"memLevel", "type":"Integer32", "location":"%r8", "direction":"import"},
      {"name":"strategy", "type":"Integer32", "location":"%r9", "direction":"import"},
-     {"name":"version", "type":"Pointer64", "location":"framebase+8", "direction":"import"},
+     {"name":"version", "type":"Pointer64", "location":"framebase+8", "pointer_indirections":"1", "direction":"import"},
      {"name":"stream_size", "type":"Integer32", "location":"framebase+16", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "inflateSetDictionary",
+      "name": "gzflush",
       "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"dictLength", "type":"Integer32", "location":"%rdx", "direction":"import"}
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"flush", "type":"Integer32", "location":"%rsi", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "inflateResetKeep",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateBound",
+      "name": "deflatePrime",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"sourceLen", "type":"Integer64", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateInit_",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"level", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"version", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"stream_size", "type":"Integer32", "location":"%rcx", "direction":"import"}
+     {"name":"bits", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"value", "type":"Integer32", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
@@ -170,23 +187,21 @@
       "name": "gzerror",
       "parameters": [
      {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"errnum", "type":"Pointer64", "location":"%rsi", "direction":"import"}
+     {"name":"errnum", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "zlibVersion",
+      "name": "gzclose_w",
       "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
     "function": {
-      "name": "gzfread",
+      "name": "gzgetc_",
       "parameters": [
-     {"name":"buf", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"size", "type":"Integer64", "location":"%rsi", "direction":"import"},
-     {"name":"nitems", "type":"Integer64", "location":"%rdx", "direction":"import"},
-     {"name":"file", "type":"", "location":"%rcx", "direction":"unknown"}
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
@@ -200,6 +215,13 @@
    }},
    {
     "function": {
+      "name": "gzrewind",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
       "name": "deflateParams",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
@@ -209,43 +231,125 @@
    }},
    {
     "function": {
-      "name": "gzclose",
+      "name": "gzbuffer",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"size", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "uncompress",
+      "parameters": [
+     {"name":"dest", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"source", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"sourceLen", "type":"Integer64", "location":"%rcx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gztell",
       "parameters": [
      {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
     "function": {
-      "name": "gzread",
+      "name": "inflateResetKeep",
       "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
     "function": {
-      "name": "inflateReset2",
+      "name": "gzputc",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"c", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "zlibCompileFlags",
+      "parameters": [
+    ]
+   }},
+   {
+    "function": {
+      "name": "compress2",
+      "parameters": [
+     {"name":"dest", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"source", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"sourceLen", "type":"Integer64", "location":"%rcx", "direction":"import"},
+     {"name":"level", "type":"Integer32", "location":"%r8", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzungetc",
+      "parameters": [
+     {"name":"c", "type":"Integer32", "location":"%rdi", "direction":"import"},
+     {"name":"file", "type":"", "location":"%rsi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "compressBound",
+      "parameters": [
+     {"name":"sourceLen", "type":"Integer64", "location":"%rdi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateBackInit_",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"windowBits", "type":"Integer32", "location":"%rsi", "direction":"import"}
+     {"name":"windowBits", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"window", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"version", "type":"Pointer64", "location":"%rcx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"stream_size", "type":"Integer32", "location":"%r8", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "gzgets",
+      "name": "gzwrite",
       "parameters": [
      {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
      {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "gzflush",
+      "name": "inflateUndermine",
       "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"flush", "type":"Integer32", "location":"%rsi", "direction":"import"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"subvert", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateGetDictionary",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"dictLength", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "deflateSetHeader",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"head", "type":"", "location":"%rsi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzopen",
+      "parameters": [
     ]
    }},
    {
@@ -266,128 +370,20 @@
    }},
    {
     "function": {
-      "name": "inflateGetHeader",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"head", "type":"", "location":"%rsi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateSync",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzsetparams",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"level", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"strategy", "type":"Integer32", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateSyncPoint",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzclose_w",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzclearerr",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gztell64",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateBackInit_",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"windowBits", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"window", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"version", "type":"Pointer64", "location":"%rcx", "direction":"import"},
-     {"name":"stream_size", "type":"Integer32", "location":"%r8", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzwrite",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "adler32_z",
-      "parameters": [
-     {"name":"adler", "type":"Integer64", "location":"%rdi", "direction":"import"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"len", "type":"Integer64", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateValidate",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"check", "type":"Integer32", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateTune",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"good_length", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"max_lazy", "type":"Integer32", "location":"%rdx", "direction":"import"},
-     {"name":"nice_length", "type":"Integer32", "location":"%rcx", "direction":"import"},
-     {"name":"max_chain", "type":"Integer32", "location":"%r8", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateSetHeader",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"head", "type":"", "location":"%rsi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "adler32",
-      "parameters": [
-     {"name":"adler", "type":"Integer64", "location":"%rdi", "direction":"import"},
-     {"name":"buf", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
       "name": "deflateSetDictionary",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "direction":"import"},
+     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
      {"name":"dictLength", "type":"Integer32", "location":"%rdx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "crc32",
+      "parameters": [
+     {"name":"crc", "type":"Integer64", "location":"%rdi", "direction":"import"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"len", "type":"Integer32", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
@@ -395,16 +391,6 @@
       "name": "gzeof",
       "parameters": [
      {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateInit2_",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"windowBits", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"version", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"stream_size", "type":"Integer32", "location":"%rcx", "direction":"import"}
     ]
    }},
    {
@@ -422,17 +408,9 @@
    }},
    {
     "function": {
-      "name": "gzungetc",
+      "name": "inflateReset",
       "parameters": [
-     {"name":"c", "type":"Integer32", "location":"%rdi", "direction":"import"},
-     {"name":"file", "type":"", "location":"%rsi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "compressBound",
-      "parameters": [
-     {"name":"sourceLen", "type":"Integer64", "location":"%rdi", "direction":"import"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
@@ -444,28 +422,37 @@
    }},
    {
     "function": {
-      "name": "gzfwrite",
+      "name": "deflateEnd",
       "parameters": [
-     {"name":"buf", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"size", "type":"Integer64", "location":"%rsi", "direction":"import"},
-     {"name":"nitems", "type":"Integer64", "location":"%rdx", "direction":"import"},
-     {"name":"file", "type":"", "location":"%rcx", "direction":"unknown"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
     "function": {
-      "name": "gzopen64",
+      "name": "adler32_z",
       "parameters": [
-     {"name":"path", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"mode", "type":"Pointer64", "location":"%rsi", "direction":"import"}
+     {"name":"adler", "type":"Integer64", "location":"%rdi", "direction":"import"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"len", "type":"Integer64", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "gzputs",
+      "name": "inflateReset2",
       "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"str", "type":"Pointer64", "location":"%rsi", "direction":"import"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"windowBits", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "deflateTune",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"good_length", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"max_lazy", "type":"Integer32", "location":"%rdx", "direction":"import"},
+     {"name":"nice_length", "type":"Integer32", "location":"%rcx", "direction":"import"},
+     {"name":"max_chain", "type":"Integer32", "location":"%r8", "direction":"import"}
     ]
    }},
    {
@@ -477,6 +464,126 @@
    }},
    {
     "function": {
+      "name": "deflateCopy",
+      "parameters": [
+     {"name":"dest", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"source", "type":"", "location":"%rsi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "get_crc_table",
+      "parameters": [
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzoffset64",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateBack",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"in", "type":"", "location":"%rsi", "direction":"unknown"},
+     {"name":"in_desc", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"out", "type":"", "location":"%rcx", "direction":"unknown"},
+     {"name":"out_desc", "type":"Pointer64", "location":"%r8", "pointer_indirections":"1", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gztell64",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "deflateResetKeep",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "crc32_combine",
+      "parameters": [
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateSync",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateCopy",
+      "parameters": [
+     {"name":"dest", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"source", "type":"", "location":"%rsi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflate",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"flush", "type":"Integer32", "location":"%rsi", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzfwrite",
+      "parameters": [
+     {"name":"buf", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"size", "type":"Integer64", "location":"%rsi", "direction":"import"},
+     {"name":"nitems", "type":"Integer64", "location":"%rdx", "direction":"import"},
+     {"name":"file", "type":"", "location":"%rcx", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "uncompress2",
+      "parameters": [
+     {"name":"dest", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"source", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
+     {"name":"sourceLen", "type":"Pointer64", "location":"%rcx", "pointer_indirections":"1", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzvprintf",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"format", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"va", "type":"", "location":"%rdx", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateSetDictionary",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"dictLength", "type":"Integer32", "location":"%rdx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateCodesUsed",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
+    ]
+   }},
+   {
+    "function": {
       "name": "inflateEnd",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
@@ -484,11 +591,9 @@
    }},
    {
     "function": {
-      "name": "inflatePrime",
+      "name": "inflateMark",
       "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"bits", "type":"Integer32", "location":"%rsi", "direction":"import"},
-     {"name":"value", "type":"Integer32", "location":"%rdx", "direction":"import"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
     ]
    }},
    {
@@ -502,175 +607,43 @@
    }},
    {
     "function": {
-      "name": "inflateCopy",
-      "parameters": [
-     {"name":"dest", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"source", "type":"", "location":"%rsi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "zlibCompileFlags",
+      "name": "zlibVersion",
       "parameters": [
     ]
    }},
    {
     "function": {
-      "name": "inflateReset",
+      "name": "crc32_z",
       "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
+     {"name":"crc", "type":"Integer64", "location":"%rdi", "direction":"import"},
+     {"name":"buf", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"len", "type":"Integer64", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "uncompress2",
+      "name": "gzopen64",
       "parameters": [
-     {"name":"dest", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"source", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"sourceLen", "type":"Pointer64", "location":"%rcx", "direction":"import"}
+     {"name":"path", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"mode", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "uncompress",
-      "parameters": [
-     {"name":"dest", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"source", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"sourceLen", "type":"Integer64", "location":"%rcx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateUndermine",
+      "name": "deflateGetDictionary",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"subvert", "type":"Integer32", "location":"%rsi", "direction":"import"}
+     {"name":"dictionary", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"dictLength", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "gzvprintf",
+      "name": "crc32_combine64",
       "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"format", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"va", "type":"", "location":"%rdx", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateCodesUsed",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzputc",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"c", "type":"Integer32", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateBack",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"in", "type":"", "location":"%rsi", "direction":"unknown"},
-     {"name":"in_desc", "type":"Pointer64", "location":"%rdx", "direction":"import"},
-     {"name":"out", "type":"", "location":"%rcx", "direction":"unknown"},
-     {"name":"out_desc", "type":"Pointer64", "location":"%r8", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzgetc_",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzbuffer",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"size", "type":"Integer32", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "crc32_combine",
-      "parameters": [
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzdopen",
-      "parameters": [
-     {"name":"fd", "type":"Integer32", "location":"%rdi", "direction":"import"},
-     {"name":"mode", "type":"Pointer64", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzoffset64",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflateInit_",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"version", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"stream_size", "type":"Integer32", "location":"%rdx", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "inflate",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"flush", "type":"Integer32", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzgetc",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"file", "type":"", "location":"%rsi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzdirect",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "gzprintf",
-      "parameters": [
-     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"format", "type":"Pointer64", "location":"%rsi", "direction":"import"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "deflateResetKeep",
-      "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
-    ]
-   }},
-   {
-    "function": {
-      "name": "get_crc_table",
-      "parameters": [
+     {"name":"crc1", "type":"Integer64", "location":"%rdi", "direction":"import"},
+     {"name":"crc2", "type":"Integer64", "location":"%rsi", "direction":"import"},
+     {"name":"len2", "type":"Integer64", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
@@ -678,25 +651,52 @@
       "name": "deflatePending",
       "parameters": [
      {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
-     {"name":"pending", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"bits", "type":"Pointer64", "location":"%rdx", "direction":"import"}
+     {"name":"pending", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"bits", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"}
     ]
    }},
    {
     "function": {
-      "name": "inflateMark",
+      "name": "inflatePrime",
       "parameters": [
-     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"}
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"bits", "type":"Integer32", "location":"%rsi", "direction":"import"},
+     {"name":"value", "type":"Integer32", "location":"%rdx", "direction":"import"}
     ]
    }},
    {
     "function": {
       "name": "compress",
       "parameters": [
-     {"name":"dest", "type":"Pointer64", "location":"%rdi", "direction":"import"},
-     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "direction":"import"},
-     {"name":"source", "type":"Pointer64", "location":"%rdx", "direction":"import"},
+     {"name":"dest", "type":"Pointer64", "location":"%rdi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"destLen", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"source", "type":"Pointer64", "location":"%rdx", "pointer_indirections":"1", "direction":"import"},
      {"name":"sourceLen", "type":"Integer64", "location":"%rcx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "inflateInit_",
+      "parameters": [
+     {"name":"strm", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"version", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"},
+     {"name":"stream_size", "type":"Integer32", "location":"%rdx", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzprintf",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"format", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"}
+    ]
+   }},
+   {
+    "function": {
+      "name": "gzputs",
+      "parameters": [
+     {"name":"file", "type":"", "location":"%rdi", "direction":"unknown"},
+     {"name":"str", "type":"Pointer64", "location":"%rsi", "pointer_indirections":"1", "direction":"import"}
     ]
    }}
 ]

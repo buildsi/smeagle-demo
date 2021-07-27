@@ -53,8 +53,12 @@ model_schema = {
                                 "type": "array",
                                 "items": {
                                     "type": "object",
+                                    "additionalProperties": False,
                                     "properties": {
                                         "name": {"type": "string"},
+                                        "pointer_indirections": {
+                                            "type": ["string", "null"]
+                                        },
                                         "type": {"type": "string"},
                                         "location": {"type": "string"},
                                         "direction": {
@@ -409,11 +413,18 @@ class StabilitySolverSetup:
                     param["type"],
                     param["location"],
                     param["direction"],
+                    param.get("pointer_indirectios", "0"),
                 )
             )
 
             # Symbol, Type, Register, Direction
-            args = [func["name"], param["type"], param["location"], param["direction"]]
+            args = [
+                func["name"],
+                param["type"],
+                param["location"],
+                param["direction"],
+                param.get("pointer_indirectios", "0"),
+            ]
             fact = AspFunction("is_%s" % identifier, args=args)
             if fact not in seen:
                 self.gen.fact(fact)

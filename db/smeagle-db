@@ -413,7 +413,7 @@ class StabilitySolverSetup:
                     param["type"],
                     param["location"],
                     param["direction"],
-                    param.get("pointer_indirectios", "0"),
+                    param.get("pointer_indirections", "0"),
                 )
             )
 
@@ -423,7 +423,7 @@ class StabilitySolverSetup:
                 param["type"],
                 param["location"],
                 param["direction"],
-                param.get("pointer_indirectios", "0"),
+                param.get("pointer_indirections", "0"),
             ]
             fact = AspFunction("is_%s" % identifier, args=args)
             if fact not in seen:

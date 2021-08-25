@@ -38,5 +38,5 @@ done
 ./smeagle-db list
 
 # Run stability test of one library vs. the other
-tests=$(ls ./results)
+tests=$(ls ./results/${package}*)
 ./smeagle-db stability-test $tests --detail

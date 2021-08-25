@@ -29,6 +29,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 clingo_cffi = hasattr(clingo.Symbol, "_rep")
 
+
 # Fields schema
 
 fields = {
@@ -36,7 +37,8 @@ fields = {
     "items": {
         "type": "object",
         "required": ["name"],
-        "additionalProperties": False,
+        # We allow additional properties here, because we can have additional underlying types
+        "additionalProperties": True,
         "properties": {
             "name": {"type": "string"},
             "class": {"type": "string"},
@@ -46,6 +48,19 @@ fields = {
             # This indicates that fields can be recursive
             "fields": {"$ref": "#"},
         },
+    },
+}
+
+# Underlying type schema
+underlying_type = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "name": {"type": "string"},
+        "class": {"type": "string"},
+        "type": {"type": "string"},
+        "size": {"type": "string"},
+        "fields": fields,
     },
 }
 
@@ -83,6 +98,7 @@ model_schema = {
                                         "size": {"type": "string"},
                                         "location": {"type": "string"},
                                         "fields": fields,
+                                        "underlying_type": underlying_type,
                                         "direction": {
                                             "type": "string",
                                             "enum": ["import", "export", "unknown"],
@@ -464,7 +480,7 @@ class GeneratorBase:
 
             # If we have an underlying type, use name, type, from there
             if "underlying_type" in param:
-                param_name = param["underlying_type"]["name"]
+                param_name = param["underlying_type"].get("name") or param_name
 
                 # Use these fields (unless they aren't defined)
                 param_type = param["underlying_type"].get("class") or param_type
@@ -638,7 +654,8 @@ class SmeagleDatabase:
         """
         Generate facts for one entry.
         """
-        data = self.get(lib)
+        # Assume basename of lib is in database (hash and package name)
+        data = self.get(os.path.basename(lib))
 
         # Cut out early if we don't have the records
         if not data:
@@ -654,8 +671,10 @@ class SmeagleDatabase:
         # We must have the stability program!
         if not os.path.exists(self.stability_lp):
             sys.exit("Logic program %s does not exist!" % self.stability_lp)
-        data1 = self.get(lib1)
-        data2 = self.get(lib2)
+
+        # Assumes basename of libs are in database (hashes and package names)
+        data1 = self.get(os.path.basename(lib1))
+        data2 = self.get(os.path.basename(lib2))
 
         # Cut out early if we don't have the records
         if not data1 or not data2:
@@ -710,6 +729,9 @@ class SmeagleDatabase:
             jsonschema.validate(data, schema=model_schema)
             self.create(name, data)
         except:
+            import IPython
+
+            IPython.embed()
             logger.warning("%s is not valid, skipping!" % path)
 
     def create(self, name, data):

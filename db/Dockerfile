@@ -1,4 +1,4 @@
-FROM ghcr.io/buildsi/smeagle
+FROM ghcr.io/buildsi/smeagle:latest
 # docker build -t smeagle-db .
 WORKDIR /opt
 RUN git clone --depth 1 https://github.com/spack/spack

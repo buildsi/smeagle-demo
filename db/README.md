@@ -40,6 +40,7 @@ This demo will currently:
 
 The whole thing looks like this:
 
+
 ```bash
 $ docker run -it smeagle-db
 ==> Installing zlib-1.2.11-fz2bs562jhc2spgubs3fvq25g3qymz6x
@@ -149,6 +150,36 @@ The entire set of steps to build and shell would be:
 $ docker build -t smeagle-db .
 ./smeagle-db facts library-name.json
 $ docker run -it --entrypoint bash -v $PWD:/db smeagle-db 
+```
+
+And here is example output (and you can compare the original functions [here](https://github.com/buildsi/build-abi-test-tim/blob/main/foo.c))
+
+```bash
+./smeagle-db facts results/libfoo.so.json 
+INFO:smeagle-db:Retrieving record for libfoo.so.json
+
+%============================================================================
+% Library Facts
+%============================================================================
+
+%----------------------------------------------------------------------------
+% Library: libfoo.so.json
+%----------------------------------------------------------------------------
+abi_typelocation("libfoo.so.json","func","e","Integer","%rdi","import","0").
+abi_typelocation("libfoo.so.json","func","f","Integer","%rsi","import","0").
+abi_typelocation("libfoo.so.json","func","s","Struct","%rdx","import","0").
+abi_typelocation("libfoo.so.json","func","a","Scalar","%rdx","import","0").
+abi_typelocation("libfoo.so.json","func","b","Scalar","%rdx","import","0").
+abi_typelocation("libfoo.so.json","func","d","Scalar","%rdx","import","0").
+abi_typelocation("libfoo.so.json","func","g","Integer","%rcx","import","0").
+abi_typelocation("libfoo.so.json","func","h","Integer","%r8","import","0").
+abi_typelocation("libfoo.so.json","func","ld","Float","framebase+8","import","0").
+abi_typelocation("libfoo.so.json","func","m","Float","%xmm0","import","0").
+abi_typelocation("libfoo.so.json","func","y","Array","%r9","import","0").
+abi_typelocation("libfoo.so.json","func","n","Float","%xmm1","import","0").
+abi_typelocation("libfoo.so.json","func","i","Integer","framebase+24","import","0").
+abi_typelocation("libfoo.so.json","func","j","Integer","framebase+32","import","0").
+abi_typelocation("libfoo.so.json","func","k","Integer","framebase+40","import","0").
 ```
 
 Please [open an issue](https://github.com/buildsi/smeagle-demo) if you have any questions!

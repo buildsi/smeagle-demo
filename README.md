@@ -19,5 +19,8 @@ easier to (eventually) switch up the base environment and libraries, etc.
 
 Toward this goal, there are two demos available:
 
- - [asp](asp): Which will generate facts and then run the solver clingo to show a result
+ - [asp](asp): Which will generate facts and then run the solver clingo to show a result (this demo is now deprecated)
  - [db](db): Which will generate facts, add to an sqlite database, and then query them for the solver.
+ 
+Of the two, the first is now considered deprecated as we've updated Smeagle, and are continue to update
+the second (more robust) approach to maintaining a database.

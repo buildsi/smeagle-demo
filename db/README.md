@@ -48,7 +48,7 @@ $ docker run -it smeagle-db
 ==> No patches needed for zlib
 ==> zlib: Executing phase: 'install'
 ==> zlib: Successfully installed zlib-1.2.11-fz2bs562jhc2spgubs3fvq25g3qymz6x
-  Fetch: 0.29s.  Build: 1.92s.  Total: 2.21s.
+  Fetch: 0.61s.  Build: 2.02s.  Total: 2.63s.
 [+] /opt/spack/opt/spack/linux-ubuntu18.04-skylake/gcc-7.5.0/zlib-1.2.11-fz2bs562jhc2spgubs3fvq25g3qymz6x
 ==> Installing zlib-1.2.8-5rhnpzmywd6woheme5edaaexeui6t7sv
 ==> No binary for zlib-1.2.8-5rhnpzmywd6woheme5edaaexeui6t7sv found: installing from source
@@ -56,7 +56,7 @@ $ docker run -it smeagle-db
 ==> No patches needed for zlib
 ==> zlib: Executing phase: 'install'
 ==> zlib: Successfully installed zlib-1.2.8-5rhnpzmywd6woheme5edaaexeui6t7sv
-  Fetch: 0.32s.  Build: 1.76s.  Total: 2.08s.
+  Fetch: 0.92s.  Build: 1.91s.  Total: 2.83s.
 [+] /opt/spack/opt/spack/linux-ubuntu18.04-skylake/gcc-7.5.0/zlib-1.2.8-5rhnpzmywd6woheme5edaaexeui6t7sv
 ==> Installing zlib-1.2.3-2vxddnraqwjmh6df5tanxkoalhmst24c
 ==> No binary for zlib-1.2.3-2vxddnraqwjmh6df5tanxkoalhmst24c found: installing from source
@@ -64,7 +64,7 @@ $ docker run -it smeagle-db
 ==> No patches needed for zlib
 ==> zlib: Executing phase: 'install'
 ==> zlib: Successfully installed zlib-1.2.3-2vxddnraqwjmh6df5tanxkoalhmst24c
-  Fetch: 5.51s.  Build: 0.94s.  Total: 6.45s.
+  Fetch: 1.08s.  Build: 1.04s.  Total: 2.12s.
 [+] /opt/spack/opt/spack/linux-ubuntu18.04-skylake/gcc-7.5.0/zlib-1.2.3-2vxddnraqwjmh6df5tanxkoalhmst24c
 INFO:smeagle-db:Retrieving record for zlib-1.2.11-fz2bs562jhc2spgubs3fvq25g3qymz6x-libz.so.json
 INFO:smeagle-db:Retrieving record for zlib-1.2.8-5rhnpzmywd6woheme5edaaexeui6t7sv-libz.so.json
@@ -76,25 +76,25 @@ INFO:smeagle-db:Libraries are not stable: 0 missing exports, 19 missing_imports
 
 Missing Imports
 ---------------
- deflateGetDictionary Pointer64 %rsi
- deflateGetDictionary Pointer64 %rdx
- crc32_z Integer64 %rdi
- crc32_z Pointer64 %rsi
- crc32_z Integer64 %rdx
- gzfread Pointer64 %rdi
- gzfread Integer64 %rsi
- gzfread Integer64 %rdx
- adler32_z Integer64 %rdi
- adler32_z Pointer64 %rsi
- adler32_z Integer64 %rdx
- inflateValidate Integer32 %rsi
- gzfwrite Pointer64 %rdi
- gzfwrite Integer64 %rsi
- gzfwrite Integer64 %rdx
- uncompress2 Pointer64 %rdi
- uncompress2 Pointer64 %rsi
- uncompress2 Pointer64 %rdx
- uncompress2 Pointer64 %rcx
+ gzfread Pointer %rdi 1
+ gzfread Integer %rsi 0
+ gzfread Integer %rdx 0
+ inflateValidate Integer %rsi 0
+ adler32_z Integer %rdi 0
+ adler32_z Pointer %rsi 1
+ adler32_z Integer %rdx 0
+ gzfwrite Pointer %rdi 1
+ gzfwrite Integer %rsi 0
+ gzfwrite Integer %rdx 0
+ uncompress2 Pointer %rdi 1
+ uncompress2 Pointer %rsi 1
+ uncompress2 Pointer %rdx 1
+ uncompress2 Pointer %rcx 1
+ crc32_z Integer %rdi 0
+ crc32_z Pointer %rsi 1
+ crc32_z Integer %rdx 0
+ deflateGetDictionary Pointer %rsi 1
+ deflateGetDictionary Pointer %rdx 1
 ```
 
 Or watch the demo!

@@ -29,6 +29,26 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 clingo_cffi = hasattr(clingo.Symbol, "_rep")
 
+# Fields schema
+
+fields = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": False,
+        "properties": {
+            "name": {"type": "string"},
+            "class": {"type": "string"},
+            "type": {"type": "string"},
+            "size": {"type": "string"},
+            # TODO should we add validation of when fields is allowed?
+            # This indicates that fields can be recursive
+            "fields": {"$ref": "#"},
+        },
+    },
+}
+
 
 # Schema for smeagle model
 model_schema = {
@@ -47,6 +67,7 @@ model_schema = {
                 "properties": {
                     "function": {
                         "type": "object",
+                        "required": ["name"],
                         "properties": {
                             "name": {"type": "string"},
                             "parameters": {
@@ -56,11 +77,12 @@ model_schema = {
                                     "additionalProperties": False,
                                     "properties": {
                                         "name": {"type": "string"},
-                                        "pointer_indirections": {
-                                            "type": ["string", "null"]
-                                        },
+                                        "indirections": {"type": ["string", "null"]},
+                                        "class": {"type": "string"},
                                         "type": {"type": "string"},
+                                        "size": {"type": "string"},
                                         "location": {"type": "string"},
+                                        "fields": fields,
                                         "direction": {
                                             "type": "string",
                                             "enum": ["import", "export", "unknown"],
@@ -190,7 +212,7 @@ class PyclingoDriver:
         """
         global clingo
         if out:
-            self.out
+            self.out = out
         else:
             self.devnull()
         self.cores = cores
@@ -220,7 +242,9 @@ class PyclingoDriver:
         self.out.write("\n")
 
     def fact(self, head):
-        """ASP fact (a rule without a body)."""
+        """
+        ASP fact (a rule without a body).
+        """
         symbol = head.symbol() if hasattr(head, "symbol") else head
 
         self.out.write("%s.\n" % str(symbol))
@@ -327,7 +351,31 @@ class PyclingoDriver:
         return result
 
 
-class StabilitySolver:
+class SolverBase:
+    """
+    Common base functions for some kind of solver.
+
+    For stability, compatibility, or just fact generation.
+    """
+
+    def setup(self, driver):
+        """
+        Setup to prepare for the solve.
+        """
+        self.gen = driver
+
+    def print(self, data, title):
+        """
+        Print a result to the terminal
+        """
+        if data:
+            print("\n" + title)
+            print("---------------")
+            for entry in data:
+                print(" " + " ".join(entry))
+
+
+class StabilitySolver(SolverBase):
     """
     Class to orchestrate a Stability Solver.
     """
@@ -339,14 +387,6 @@ class StabilitySolver:
         # The driver will generate facts rules to generate an ASP program.
         self.driver = PyclingoDriver()
         self.setup = StabilitySolverSetup(lib1, lib2)
-
-    def print(self, data, title):
-        """Print a result to the terminal"""
-        if data:
-            print("\n" + title)
-            print("---------------")
-            for entry in data:
-                print(" " + " ".join(entry))
 
     def solve(self, logic_programs, detail=False):
         """
@@ -365,25 +405,33 @@ class StabilitySolver:
                 self.print(missing_exports, "Missing Exports")
 
 
-class StabilitySolverSetup:
+class FactGenerator(SolverBase):
     """
-    Class to set up and run an ABI Stability and Compatability Solver.
+    Class to orchestrate fact generation (uses FactGeneratorSetup)
     """
 
-    def __init__(self, lib1, lib2):
-        self.lib1 = lib1
-        self.lib2 = lib2
-
-    def setup(self, driver):
+    def __init__(self, lib):
         """
-        Setup to prepare for the solve.
+        Create a driver to run a compatibility model test for two libraries.
         """
-        self.gen = driver
-        self.gen.h1("Library Facts")
-        self.add_library(self.lib1, "a")
-        self.add_library(self.lib2, "b")
+        # The driver will generate facts rules to generate an ASP program.
+        self.driver = PyclingoDriver(out=sys.stdout)
+        self.setup = FactGeneratorSetup(lib)
 
-    def add_library(self, lib, identifier):
+    def solve(self):
+        """
+        Generate facts
+        """
+        return self.driver.solve(self.setup, facts_only=True)
+
+
+class GeneratorBase:
+    """
+    The GeneratorBase is the base for any kind of Setup (fact generator or solve)
+    Base functions to set up an ABI Stability and Compatability Solver.
+    """
+
+    def add_library(self, lib, identifier=None):
         """
         Given a loaded Smeagle Model, generate facts for it.
         """
@@ -395,7 +443,7 @@ class StabilitySolverSetup:
             # Functions
             self.generate_function(lib, loc.get("function"), identifier)
 
-    def generate_function(self, lib, func, identifier):
+    def generate_function(self, lib, func, identifier=None):
         """
         Generate facts for a function
         """
@@ -404,31 +452,116 @@ class StabilitySolverSetup:
 
         name = func["name"]
         seen = set()
+
         for param in func.get("parameters", []):
+
+            # These values assume no underlying type (defaults)
+            param_name = param["name"]
+            param_type = param["class"]  # param['type'] is compiler specific
+
+            # If the param has fields, continue printing until we are done
+            fields = param.get("fields", [])
+
+            # If we have an underlying type, use name, type, from there
+            if "underlying_type" in param:
+                param_name = param["underlying_type"]["name"]
+
+                # Use these fields (unless they aren't defined)
+                param_type = param["underlying_type"].get("class") or param_type
+
+                # If the param has fields, continue printing until we are done
+                fields = param["underlying_type"].get("fields", []) or fields
+
+            # Location and direction are always with the original parameter
             self.gen.fact(
                 fn.abi_typelocation(
                     lib.name,
                     func["name"],
-                    param["name"],
-                    param["type"],
+                    param_name,
+                    param_type,
                     param["location"],
                     param["direction"],
-                    param.get("pointer_indirections", "0"),
+                    param.get("indirections", "0"),
                 )
             )
 
-            # Symbol, Type, Register, Direction
+            # While we have fields, keep adding them as facts until no more
+            while fields:
+                field = fields.pop(0)
+                self.gen.fact(
+                    # The library, function name, direction and location are the same
+                    fn.abi_typelocation(
+                        lib.name,
+                        func["name"],
+                        field.get("name", ""),
+                        field.get("class", ""),
+                        param["location"],
+                        param["direction"],
+                        field.get("indirections", "0"),
+                    )
+                )
+                # Fields can have nested fields
+                fields += field.get("fields", [])
+
+            # If no identifier, skip the last step
+            if not identifier:
+                continue
+
+            # This is only needed for the stability model to identify membership
+            # of a particular function symbol, etc. with a library set (e.g., a or b)
+            # Symbol, Type, Register, Direction, Pointer Indirections
             args = [
                 func["name"],
-                param["type"],
+                param["class"],
                 param["location"],
                 param["direction"],
-                param.get("pointer_indirections", "0"),
+                param.get("indirections", "0"),
             ]
             fact = AspFunction("is_%s" % identifier, args=args)
             if fact not in seen:
                 self.gen.fact(fact)
                 seen.add(fact)
+
+
+class StabilitySolverSetup(GeneratorBase):
+    """
+    Class to set up and run an ABI Stability and Compatability Solver.
+    """
+
+    def __init__(self, lib1, lib2):
+        self.lib1 = lib1
+        self.lib2 = lib2
+
+    def setup(self, driver):
+        """
+        Setup to prepare for the solve.
+
+        This function overrides the base setup, which will generate facts only
+        for one function.
+        """
+        self.gen = driver
+        self.gen.h1("Library Facts")
+        self.add_library(self.lib1, "a")
+        self.add_library(self.lib2, "b")
+
+
+class FactGeneratorSetup(GeneratorBase):
+    """
+    Class to accept one library and generate facts.
+    """
+
+    def __init__(self, lib):
+        self.lib = lib
+
+    def setup(self, driver):
+        """
+        Setup to prepare for the solve.
+
+        This base function provides fact generation for one library.
+        """
+        self.gen = driver
+        self.gen.h1("Library Facts")
+        self.add_library(self.lib)
 
 
 def read_json(filename):
@@ -500,6 +633,19 @@ class SmeagleDatabase:
 
     def __exit__(self):
         self.conn.close()
+
+    def generate_facts(self, lib):
+        """
+        Generate facts for one entry.
+        """
+        data = self.get(lib)
+
+        # Cut out early if we don't have the records
+        if not data:
+            sys.exit("Cannot find database entry for %s." % lib)
+
+        setup = FactGenerator(data[0])
+        setup.solve()
 
     def stability_test(self, lib1, lib2, detail=False):
         """
@@ -600,6 +746,15 @@ def get_parser():
     stability_test = subparsers.add_parser(
         "stability-test", help="List entries in the database."
     )
+
+    # Generate facts for one libraryh
+    facts = subparsers.add_parser(
+        "facts", help="Generate facts (asp atoms) for one library."
+    )
+    facts.add_argument(
+        "single_lib", help="single library database identifier to generate facts for."
+    )
+
     libs = stability_test.add_argument(
         "libs", help="Library ids to run stability tests for (N=2)", nargs=2
     )
@@ -607,12 +762,12 @@ def get_parser():
         "--detail", default=False, action="store_true", help="Show detailed results."
     )
 
-    for command in [load, listing, stability_test]:
+    for command in [load, listing, stability_test, facts]:
         command.add_argument(
             "--root",
             "-r",
             dest="root",
-            help="The root where the database will be written and ./results should be found.",
+            help="The root for writing the database and ./results should be found.",
             default=os.getcwd(),
         )
     return parser
@@ -636,9 +791,17 @@ def main():
     smeagle = SmeagleDatabase(args.root)
     if args.command == "load":
         smeagle.load(args.path)
+
+    # List all entries in the database
     elif args.command == "list":
         for record in smeagle.list():
             logger.info(record.name)
+
+    # Just facts for one library
+    elif args.command == "facts":
+        smeagle.generate_facts(args.single_lib)
+
+    # Stability test between two libraries
     elif args.command == "stability-test":
         smeagle.stability_test(*args.libs, detail=args.detail)
 

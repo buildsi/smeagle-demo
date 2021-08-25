@@ -7,11 +7,21 @@ This demo version is going to:
 3. For each pair of model facts, import them into a sqlite database
 4. Allow for query to run solves.
 
+## Build or Install
+
 First build the container:
 
 ```bash
 $ docker build -t smeagle-db .
 ```
+
+Alternatively, if you want to create an environment locally (without Docker) you can follow the same 
+steps as the [Dockerfile](Dockerfile), primarily creating a virtual environment with
+Python, installing gringo/clingo on your system, and then installing requirements.txt.
+
+## Stability Tests
+
+### 1. Run Full Demo
 
 To run the whole thing:
 
@@ -94,7 +104,9 @@ Or watch the demo!
 Are those assertions correct? Well Smeagle isn't really done yet, so maybe not! :)
 You can see the entire logic in [run.sh](run.sh) which uses [smeagle-db](smeagle-db) (python).
 
-Specifically, once you have some libraries and have run Smeagle on those libraries to output
+### 2. Run Manually
+
+Once you have some libraries and have run Smeagle on those libraries to output
 json, you can then run smeable-db to load and list:
 
 ```bash
@@ -110,6 +122,8 @@ tests=$(ls ./results)
 ./smeagle-db stability-test $tests --detail
 ```
 
+### 3. Run Interactively / Develop
+
 To run interactively or develop, you probably want to bind the present working
 directory. For the container, Smeagle is installed at `/code` and the files here are
 added to `/db` so if you want to run and bind:
@@ -117,7 +131,24 @@ added to `/db` so if you want to run and bind:
 ```bash
 $ docker run -it --entrypoint bash -v $PWD:/db smeagle-db 
 
-# run.sh will reproduce what you see above.
+# run.sh will reproduce what you see above, or any of the commands within.
+```
+
+## Generate Facts
+
+If you just want to generate facts for a single library, also within the container
+you can do:
+
+```bash
+./smeagle-db facts library-name.json
+```
+
+The entire set of steps to build and shell would be:
+
+```bash
+$ docker build -t smeagle-db .
+./smeagle-db facts library-name.json
+$ docker run -it --entrypoint bash -v $PWD:/db smeagle-db 
 ```
 
 Please [open an issue](https://github.com/buildsi/smeagle-demo) if you have any questions!

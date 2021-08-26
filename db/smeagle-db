@@ -466,6 +466,7 @@ class GeneratorBase:
         if not func:
             return
 
+        libname = os.path.basename(lib.data["library"])
         name = func["name"]
         seen = set()
 
@@ -491,7 +492,7 @@ class GeneratorBase:
             # Location and direction are always with the original parameter
             self.gen.fact(
                 fn.abi_typelocation(
-                    lib.name,
+                    libname,
                     func["name"],
                     param_name,
                     param_type,
@@ -507,7 +508,7 @@ class GeneratorBase:
                 self.gen.fact(
                     # The library, function name, direction and location are the same
                     fn.abi_typelocation(
-                        lib.name,
+                        libname,
                         func["name"],
                         field.get("name", ""),
                         field.get("class", ""),

@@ -165,21 +165,21 @@ INFO:smeagle-db:Retrieving record for libfoo.so.json
 %----------------------------------------------------------------------------
 % Library: libfoo.so.json
 %----------------------------------------------------------------------------
-abi_typelocation("libfoo.so.json","func","e","Integer","%rdi","import","0").
-abi_typelocation("libfoo.so.json","func","f","Integer","%rsi","import","0").
-abi_typelocation("libfoo.so.json","func","s","Struct","%rdx","import","0").
-abi_typelocation("libfoo.so.json","func","a","Scalar","%rdx","import","0").
-abi_typelocation("libfoo.so.json","func","b","Scalar","%rdx","import","0").
-abi_typelocation("libfoo.so.json","func","d","Scalar","%rdx","import","0").
-abi_typelocation("libfoo.so.json","func","g","Integer","%rcx","import","0").
-abi_typelocation("libfoo.so.json","func","h","Integer","%r8","import","0").
-abi_typelocation("libfoo.so.json","func","ld","Float","framebase+8","import","0").
-abi_typelocation("libfoo.so.json","func","m","Float","%xmm0","import","0").
-abi_typelocation("libfoo.so.json","func","y","Array","%r9","import","0").
-abi_typelocation("libfoo.so.json","func","n","Float","%xmm1","import","0").
-abi_typelocation("libfoo.so.json","func","i","Integer","framebase+24","import","0").
-abi_typelocation("libfoo.so.json","func","j","Integer","framebase+32","import","0").
-abi_typelocation("libfoo.so.json","func","k","Integer","framebase+40","import","0").
+abi_typelocation("libfoo.so","func","e","Integer","%rdi","import","0").
+abi_typelocation("libfoo.so","func","f","Integer","%rsi","import","0").
+abi_typelocation("libfoo.so","func","s","Struct","%rdx","import","0").
+abi_typelocation("libfoo.so","func","a","Scalar","%rdx","import","0").
+abi_typelocation("libfoo.so","func","b","Scalar","%rdx","import","0").
+abi_typelocation("libfoo.so","func","d","Scalar","%rdx","import","0").
+abi_typelocation("libfoo.so","func","g","Integer","%rcx","import","0").
+abi_typelocation("libfoo.so","func","h","Integer","%r8","import","0").
+abi_typelocation("libfoo.so","func","ld","Float","framebase+8","import","0").
+abi_typelocation("libfoo.so","func","m","Float","%xmm0","import","0").
+abi_typelocation("libfoo.so","func","y","Array","%r9","import","0").
+abi_typelocation("libfoo.so","func","n","Float","%xmm1","import","0").
+abi_typelocation("libfoo.so","func","i","Integer","framebase+24","import","0").
+abi_typelocation("libfoo.so","func","j","Integer","framebase+32","import","0").
+abi_typelocation("libfoo.so","func","k","Integer","framebase+40","import","0").
 ```
 
 Please [open an issue](https://github.com/buildsi/smeagle-demo) if you have any questions!
